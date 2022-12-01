@@ -18,15 +18,15 @@ func linesFromFile(fileName string) []string {
 	check(err)
 	defer file.Close()
 
-	result := make([]string, 0)
+	lines := make([]string, 0)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		result = append(result, scanner.Text())
+		lines = append(lines, scanner.Text())
 	}
 
 	check(scanner.Err())
 
-	return result
+	return lines
 }
 
 func numsFromFile(fileName string) []int {
@@ -44,40 +44,45 @@ func stringsToInts(strings []string) []int {
 	return result
 }
 
-func abs(n int) int {
-	return int(math.Abs(float64(n)))
+type number interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64 | uintptr | float32 | float64
 }
 
-func sum(nums ...int) int {
-	sum := 0
+func abs[T number](n T) T {
+	return T(math.Abs(float64(n)))
+}
+
+func sum[T number](nums ...T) T {
+	var sum T
+	sum = 0
 	for _, n := range nums {
 		sum += n
 	}
 	return sum
 }
 
-func avg(nums ...int) float64 {
+func avg[T number](nums ...T) float64 {
 	return float64(sum(nums...)) / float64(len(nums))
 }
 
-type runes []rune
+type numbers[T number] []T
 
-func (r runes) Len() int           { return len(r) }
-func (r runes) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
-func (r runes) Less(i, j int) bool { return r[i] < r[j] }
+func (r numbers[T]) Len() int           { return len(r) }
+func (r numbers[T]) Swap(i, j int)      { r[i], r[j] = r[j], r[i] }
+func (r numbers[T]) Less(i, j int) bool { return r[i] < r[j] }
 
-type stack []rune
+type stack[T comparable] []T
 
-func (s *stack) pop() rune {
+func (s *stack[T]) pop() T {
 	tmp := (*s)[len(*s)-1]
 	*s = (*s)[:len(*s)-1]
 	return tmp
 }
 
-func (s *stack) push(elem rune) {
+func (s *stack[T]) push(elem T) {
 	*s = append(*s, elem)
 }
 
-func (s stack) peek() rune {
+func (s stack[T]) peek() T {
 	return s[len(s)-1]
 }
