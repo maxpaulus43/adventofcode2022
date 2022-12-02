@@ -29,7 +29,7 @@ func linesFromFile(fileName string) []string {
 	return lines
 }
 
-func numsFromFile(fileName string) []int {
+func intsFromFile(fileName string) []int {
 	return stringsToInts(linesFromFile(fileName))
 }
 
@@ -78,11 +78,9 @@ func (s *stack[T]) pop() T {
 	*s = (*s)[:len(*s)-1]
 	return tmp
 }
-
 func (s *stack[T]) push(elem T) {
 	*s = append(*s, elem)
 }
-
 func (s stack[T]) peek() T {
 	return s[len(s)-1]
 }
@@ -95,6 +93,15 @@ func reduce[T number](list []T, initial T, reduceFn func(accumulator T, currValu
 	return result
 }
 
-// func reduce[T number](list []T, reduceFn func(accumulator T, currValue T) T) T {
-//   return reduce(list, 0, reduceFn);
-// }
+type set[T comparable] map[T]struct{}
+
+func (s set[T]) has(value T) bool {
+	_, ok := s[value]
+	return ok
+}
+func (s set[T]) add(value T) {
+	s[value] = struct{}{}
+}
+func (s set[T]) remove(value T) {
+	delete(s, value)
+}
