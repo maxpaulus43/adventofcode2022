@@ -86,3 +86,15 @@ func (s *stack[T]) push(elem T) {
 func (s stack[T]) peek() T {
 	return s[len(s)-1]
 }
+
+func reduce[T number](list []T, initial T, reduceFn func(accumulator T, currValue T) T) T {
+	result := initial
+	for _, n := range list {
+		result = reduceFn(result, n)
+	}
+	return result
+}
+
+// func reduce[T number](list []T, reduceFn func(accumulator T, currValue T) T) T {
+//   return reduce(list, 0, reduceFn);
+// }
