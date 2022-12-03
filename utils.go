@@ -105,3 +105,19 @@ func (s set[T]) add(value T) {
 func (s set[T]) remove(value T) {
 	delete(s, value)
 }
+func (s set[T]) union(otherSet set[T]) []T {
+	result := make([]T, 0)
+	for v := range s {
+		if otherSet.has(v) {
+			result = append(result, v)
+		}
+	}
+	return result
+}
+func stringSet(str string) set[rune] {
+	result := make(set[rune])
+	for _, ch := range str {
+		result.add(ch)
+	}
+	return result
+}
