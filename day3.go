@@ -15,8 +15,8 @@ func day3Part1() int {
 	for _, line := range lines {
 		length := len(line)
 		cmp1, cmp2 := runeSet(line[:length/2]), runeSet(line[length/2:])
-		union := cmp1.union(cmp2)
-		sum += score(union[0])
+		intersection := cmp1.intersection(cmp2)
+		sum += score(intersection[0])
 	}
 	return sum
 }
@@ -28,8 +28,8 @@ func day3Part2() int {
 		firstElf := runeSet(lines[i])
 		secondElf := runeSet(lines[i+1])
 		thirdElf := runeSet(lines[i+2])
-		union := runeSet(string(firstElf.union(secondElf))).union(thirdElf)
-		sum += score(union[0])
+		intersection := runeSet(string(firstElf.intersection(secondElf))).intersection(thirdElf)
+		sum += score(intersection[0])
 	}
 	return sum
 }

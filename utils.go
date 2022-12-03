@@ -105,7 +105,7 @@ func (s set[T]) add(value T) {
 func (s set[T]) remove(value T) {
 	delete(s, value)
 }
-func (s set[T]) union(otherSet set[T]) []T {
+func (s set[T]) intersection(otherSet set[T]) []T {
 	result := make([]T, 0)
 	for v := range s {
 		if otherSet.has(v) {
