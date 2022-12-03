@@ -14,7 +14,7 @@ func day3Part1() int {
 	sum := 0
 	for _, line := range lines {
 		length := len(line)
-		cmp1, cmp2 := stringSet(line[:length/2]), stringSet(line[length/2:])
+		cmp1, cmp2 := runeSet(line[:length/2]), runeSet(line[length/2:])
 		union := cmp1.union(cmp2)
 		sum += score(union[0])
 	}
@@ -25,10 +25,10 @@ func day3Part2() int {
 	lines := linesFromFile("inputs/day3.txt")
 	sum := 0
 	for i := 0; i < len(lines); i += 3 {
-		firstElf := stringSet(lines[i])
-		secondElf := stringSet(lines[i+1])
-		thirdElf := stringSet(lines[i+2])
-		union := stringSet(string(firstElf.union(secondElf))).union(thirdElf)
+		firstElf := runeSet(lines[i])
+		secondElf := runeSet(lines[i+1])
+		thirdElf := runeSet(lines[i+2])
+		union := runeSet(string(firstElf.union(secondElf))).union(thirdElf)
 		sum += score(union[0])
 	}
 	return sum

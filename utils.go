@@ -114,7 +114,7 @@ func (s set[T]) union(otherSet set[T]) []T {
 	}
 	return result
 }
-func stringSet(str string) set[rune] {
+func runeSet(str string) set[rune] {
 	result := make(set[rune])
 	for _, ch := range str {
 		result.add(ch)
