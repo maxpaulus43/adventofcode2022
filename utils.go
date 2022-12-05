@@ -17,16 +17,19 @@ func linesFromFile(fileName string) []string {
 	file, err := os.Open(fileName)
 	check(err)
 	defer file.Close()
-
 	lines := make([]string, 0)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		lines = append(lines, scanner.Text())
 	}
-
 	check(scanner.Err())
-
 	return lines
+}
+
+func stringFromFile(fileName string) string {
+	bytes, err := os.ReadFile(fileName)
+	check(err)
+	return string(bytes)
 }
 
 func intsFromFile(fileName string) []int {
@@ -83,14 +86,6 @@ func (s *stack[T]) push(elem T) {
 }
 func (s stack[T]) peek() T {
 	return s[len(s)-1]
-}
-
-func reduce[T number](list []T, initial T, reduceFn func(accumulator T, currValue T) T) T {
-	result := initial
-	for _, n := range list {
-		result = reduceFn(result, n)
-	}
-	return result
 }
 
 type set[T comparable] map[T]struct{}

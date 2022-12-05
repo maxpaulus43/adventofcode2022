@@ -3,47 +3,21 @@ package main
 import (
 	"strconv"
 	"strings"
+	"unicode"
 )
 
-func parseDrawing(lines []string) []stack[string] {
+func parseDrawing(pic []string) []stack[string] {
 	result := make([]stack[string], 0)
-	pic := make([][]rune, 0)
-
-	for _, line := range lines {
-		if len(line) == 0 {
-			break
-		}
-		pic = append(pic, []rune(line))
-	}
-
 	for j, ch := range pic[len(pic)-1] {
-		if ch == ' ' || ch == '\n' {
-			continue
-		}
-		stack := make(stack[string], 0)
-		for i := len(pic) - 2; i >= 0; i-- {
-			if pic[i][j] == ' ' {
-				continue
+		if unicode.IsDigit(ch) {
+			stack := make(stack[string], 0)
+			for i := len(pic) - 2; i >= 0; i-- {
+				if unicode.IsLetter(rune(pic[i][j])) {
+					stack.push(string(pic[i][j]))
+				}
 			}
-			stack.push(string(pic[i][j]))
+			result = append(result, stack)
 		}
-		result = append(result, stack)
-	}
-	return result
-}
-
-func parseMoves(lines []string) []string {
-	picDone := false
-	result := make([]string, len(lines))
-	for _, line := range lines {
-		if len(line) == 0 {
-			picDone = true
-			continue
-		}
-		if !picDone {
-			continue
-		}
-		result = append(result, line)
 	}
 	return result
 }
@@ -55,9 +29,11 @@ func toInt(s string) int {
 }
 
 func day5Part1() string {
-	lines := linesFromFile("inputs/day5.txt")
-	stacks := parseDrawing(lines)
-	moves := parseMoves(lines)
+	fileStr := stringFromFile("inputs/day5.txt")
+	sections := strings.Split(fileStr, "\n\n")
+	stacks := parseDrawing(strings.Split(sections[0], "\n"))
+	moves := strings.Split(sections[1], "\n")
+
 	for _, move := range moves {
 		if len(move) == 0 {
 			continue
@@ -66,7 +42,6 @@ func day5Part1() string {
 		cnt := toInt(fields[1])
 		from := toInt(fields[3]) - 1
 		to := toInt(fields[5]) - 1
-
 		for i := 0; i < cnt; i++ {
 			stacks[to].push(stacks[from].pop())
 		}
@@ -80,11 +55,12 @@ func day5Part1() string {
 	return result
 }
 
-// almost exactly the same as part 1, but use a tempStack to reverse the order of the moved packages.
+// // almost exactly the same as part 1, but use a tempStack to reverse the order of the moved packages.
 func day5Part2() string {
-	lines := linesFromFile("inputs/day5.txt")
-	stacks := parseDrawing(lines)
-	moves := parseMoves(lines)
+	fileStr := stringFromFile("inputs/day5.txt")
+	sections := strings.Split(fileStr, "\n\n")
+	stacks := parseDrawing(strings.Split(sections[0], "\n"))
+	moves := strings.Split(sections[1], "\n")
 	for _, move := range moves {
 		if len(move) == 0 {
 			continue
