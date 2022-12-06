@@ -13,7 +13,7 @@ func day6Part1() int {
 
 func day6Part2() int {
 	line := stringFromFile("inputs/day6.txt")
-	for i := 0; i < len(line)-4; i++ {
+	for i := 0; i < len(line)-14; i++ {
 		set := runeSet(line[i : i+14])
 		if len(set) == 14 {
 			return i + 14
